@@ -2,6 +2,7 @@ import BinarySearchTree from './BinarySearchTree.js';
 import Graph from './Graph.js';
 import HashTable from './HashTable.js';
 import LinkedList from './LinkedList.js';
+import LoopQueue from './LoopQueue.js';
 import DoubleLinkedList from './DoubleLinkedList.js';
 import PriorityQueue from './PriorityQueue.js';
 import Stack from './Stack.js';
@@ -267,3 +268,66 @@ function Random() {
 const r_button = document.querySelector('#random')
 
 r_button.addEventListener('click', Random)
+
+const lq = new LoopQueue(4);
+
+lq.enqueue(1)
+lq.dequeue()
+lq.enqueue(2)
+lq.dequeue()
+lq.enqueue(3)
+lq.dequeue()
+lq.enqueue(4)
+lq.dequeue()
+lq.enqueue(5)
+lq.enqueue(6)
+lq.enqueue(7)
+lq.enqueue(8)
+lq.dequeue()
+lq.enqueue(9)
+lq.dequeue()
+lq.enqueue(10)
+lq.dequeue()
+lq.enqueue(11)
+lq.dequeue()
+lq.enqueue(12)
+console.log(lq, lq.items)
+console.log('front:', lq.front(), 'back:', lq.back())
+console.log(lq.toString())
+
+function monotoneQueue(n, m, items = []) {
+    let arr = [0]
+    let q = []
+    let ans = 0
+    for (let i = 1; i <= n; i++) {
+        arr[i] = items[i - 1]
+        arr[i] += (arr[i - 1] || 0)
+    }
+
+    let head = 0,
+        tail = 0
+
+    q[tail++] = 0
+    ans = arr[1]
+    console.log(arr)
+    for (let i = 1; i <= n; i++) {
+        console.log(arr[i], arr[q[head]])
+        ans = Math.max(ans, arr[i] - arr[q[head]])
+        console.log('ans:', ans, 'index:', i, 'head:', head, 'tail:', tail)
+
+        console.log('while external:', arr[q[tail - 1]], arr[i])
+        while (tail - head && arr[q[tail - 1]] >= arr[i]) {
+            console.log('while:', arr[q[tail - 1]], arr[i])
+            tail--
+        }
+
+        q[tail++] = i
+        console.log('i - m =', i - m, JSON.stringify(q))
+        if (q[head] === i - m) head++
+    }
+
+
+    return ans
+}
+
+console.log(monotoneQueue(6, 4, [1, -3, 5, 1, -2, 3]))
